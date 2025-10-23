@@ -1,6 +1,7 @@
 package com.box.dispatch_service.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
@@ -30,5 +31,6 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "box_id")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Box box;
 }

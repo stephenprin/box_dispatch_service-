@@ -1,6 +1,7 @@
 package com.box.dispatch_service.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -29,6 +30,7 @@ public class Box {
 
     @Size(max = 20)
     @Column(unique = true, nullable = false, length = 20)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String txref;
 
     @Max(500)
