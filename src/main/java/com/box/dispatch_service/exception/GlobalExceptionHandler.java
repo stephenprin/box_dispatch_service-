@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
 
         Map<String, Object> body = new HashMap<>();
-        body.put("error", "Validation failed");
+        body.put("error", errors);
         body.put("violations", errors);
 
         return ResponseEntity.badRequest().body(body);
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
 
         Map<String, Object> body = new HashMap<>();
-        body.put("error", "Validation failed");
+        body.put("error", errors);
         body.put("violations", errors);
 
         return ResponseEntity.badRequest().body(body);

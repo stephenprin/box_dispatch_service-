@@ -10,5 +10,5 @@ import java.util.Optional;
 
 public interface BoxRepository extends JpaRepository<Box, String> {
     Optional<Box> findByTxref(String txref);
-    List<Box> findByStateAndBatteryCapacityGreaterThanEqual(BoxState state, int battery);
+    List<Box> findByState(BoxState state);
 }

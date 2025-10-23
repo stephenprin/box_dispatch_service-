@@ -1,6 +1,7 @@
 package com.box.dispatch_service.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
@@ -28,16 +29,13 @@ public class Box {
     private String id;
 
 
-    @Size(max = 20)
     @Column(unique = true, nullable = false, length = 20)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String txref;
 
-    @Max(500)
+    @Column(nullable = false)
     private Double weightLimit;
 
-    @Min(0)
-    @Max(100)
+    @Column
     private Integer batteryCapacity = 100;
 
     @Enumerated(EnumType.STRING)
@@ -53,6 +51,7 @@ public class Box {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
             orphanRemoval = true
     )
+    @JsonManagedReference
     @Builder.Default
     private List<Item> items = new ArrayList<>();
 

@@ -1,5 +1,6 @@
 package com.box.dispatch_service.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -20,17 +21,20 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Pattern(regexp = "[a-zA-Z0-9_-]+")
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private Double weight;
 
-    @Pattern(regexp = "[A-Z0-9_-]+")
     @Column(unique = true, nullable = false)
     private String code;
+
 
     @ManyToOne
     @JoinColumn(name = "box_id")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonBackReference
     private Box box;
 }
+
