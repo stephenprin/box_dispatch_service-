@@ -17,7 +17,7 @@ It handles box registration, item management, weight limits, and battery capacit
 ---
 
 ## 🛠️ Tech Stack
-- **Java 21**
+- **Java 17
 - **Spring Boot 3**
 - **Spring Data JPA**
 - **PostgreSQL**
@@ -60,33 +60,8 @@ GRANT ALL PRIVILEGES ON DATABASE box_dispatch_db TO box_user;
 psql -U box_user -d box_dispatch_db
 ```
 
----
 
-## ⚙️ Configuration
-
-Update your `src/main/resources/application.properties` file:
-
-```properties
-spring.application.name=box-dispatch-service
-
-# PostgreSQL Database Configuration
-spring.datasource.url=jdbc:postgresql://localhost:5432/box_dispatch_db
-spring.datasource.username=box_user
-spring.datasource.password=box_password
-spring.datasource.driver-class-name=org.postgresql.Driver
-
-# JPA
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-
-# Server Port
-server.port=8080
-```
-
----
-
-## 🧪 Run and Test the Project
+##  Run and Test the Project
 
 ### 1️⃣ Clone the repository:
 ```bash
@@ -114,7 +89,7 @@ http://localhost:8080
 
 ---
 
-## 📮 Example API Usage
+##  Example API Usage
 
 ### ✅ Create a Box
 **POST** `/api/v1/boxes`
@@ -141,7 +116,7 @@ http://localhost:8080
 
 ---
 
-## 🧪 Running Tests
+##  Running Tests
 
 Run all tests using:
 ```bash
@@ -150,12 +125,41 @@ mvn test
 
 ---
 
-## 🧑‍💻 Developer Notes
+##  Developer Notes
 
 - The `txref` (transaction reference) is auto-generated in the format `BOX-0001`, `BOX-0002`, etc.
 - Each box can hold multiple items, but cannot exceed the defined weight limit.
 - `@JsonProperty(access = JsonProperty.Access.READ_ONLY)` ensures certain fields like `txref` are not modified by client input.
 
----
+
+
+## Design Assumptions
+
+Modular and Layered Architecture
+I assumed a clean, layered Spring-Boot architecture 
+with Controller → DTO → Service → Repository → Entity separation. 
+This promotes testability, maintainability, and scalability while
+keeping each layer focused on a single responsibility.
+
+Database Design
+I assumed PostgreSQL as the primary production database for robust 
+relational consistency, ACID compliance, and 
+support for advanced features like UUID generation
+
+Validation & Error Handling
+I assumed input validation belongs exclusively on DTOs using @Valid, 
+@NotBlank, @Pattern, and @Positive. Entity-level annotations are limited to
+database constraints only (@Column(nullable=false), unique=true).
+
+Default and Fallback Behaviors
+I assumed sensible defaults:
+batteryCapacity = 100 if not provided
+state = IDLE on creation
+ITEM-0001, ITEM-0002... generated server-side using AtomicLong
+This ensures predictable behavior, prevents null issues, and protects 
+against client-side tampering.
+
+All write operations are @Transactional with a single save() at method end 
+to prevent partial state (e.g., box stuck in LOADING)
 
 
