@@ -12,6 +12,7 @@ import lombok.*;
 public class ItemDto {
     @NotBlank(message = "Name is required")
     @Pattern(regexp = "[a-zA-Z0-9_-]+", message = "Name must contain only letters, numbers, '-', or '_'")
+    @Valid
     private String name;
 
     @NotNull(message = "Weight is required")
